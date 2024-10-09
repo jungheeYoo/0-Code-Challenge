@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>🔥 Calculator 🔥</title>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css"
+    />
+    <style>
+      body {
+        padding: 20px;
+      }
+      h1 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    function NumberInput({ value, placeholder, onChange }) {
+      return (
+        <div>
+          <input
+            type="number"
+            value={value}
+            placeholder={placeholder}
+            onChange={onChange}
+          />
+        </div>
+      );
+    }
+
+    function App() {
+      const [firstNumber, setFirstNumber] = React.useState();
+      const [secondNumber, setSecondNumber] = React.useState();
+      const [index, setIndex] = React.useState('0');
+      const [result, setResult] = React.useState(null);
+
+      const firstNumOnChange = (event) => {
+        setFirstNumber(event.target.value);
+      };
+
+      const secondNumOnChange = (event) => {
+        setSecondNumber(event.target.value);
+      };
+
+      const onSelect = (event) => {
+        setIndex(event.target.value);
+      };
+
+      const onCalculate = () => {
+        const num1 = parseFloat(firstNumber);
+        const num2 = parseFloat(secondNumber);
+
+        let calResult;
+
+        switch (index) {
+          case '1':
+            calResult = num1 + num2;
+            break;
+          case '2':
+            calResult = num1 - num2;
+            break;
+          case '3':
+            calResult = num2 !== 0 ? num1 / num2 : '0으로 나눌 수 없습니다.';
+            break;
+          case '4':
+            calResult = num1 * num2;
+            break;
+          default:
+            calResult = '연산을 선택해주세요.';
+        }
+
+        setResult(calResult);
+      };
+
+      return (
+        <div className="container">
+          <h1>🔥 Calculator 🔥</h1>
+          <NumberInput
+            value={firstNumber}
+            placeholder="👉 Write a number..."
+            onChange={firstNumOnChange}
+          />
+          <NumberInput
+            value={secondNumber}
+            placeholder="👉 And another one..."
+            onChange={secondNumOnChange}
+          />
+          <select value={index} onChange={onSelect}>
+            <option value="0">👉 Select operation</option>
+            <option value="1">+</option>
+            <option value="2">-</option>
+            <option value="3">/</option>
+            <option value="4">*</option>
+          </select>
+          <button onClick={onCalculate}>Calculate</button>
+          <h2>The result is: {result}</h2>
+        </div>
+      );
+    }
+    const root = document.getElementById('root');
+    ReactDOM.render(<App />, root);
+  </script>
+</html>
